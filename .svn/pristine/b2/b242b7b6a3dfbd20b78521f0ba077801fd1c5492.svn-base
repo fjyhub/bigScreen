@@ -1,0 +1,28 @@
+@keyframes identifier {
+  from {
+    transform: translateX(1000px);
+  }
+
+  to {
+    transform: translateX(20px);
+  }
+}
+
+@keyframes against {
+  from {
+    transform: translateX(20px);
+  }
+
+  to {
+    transform: translateX(1000px);
+  }
+}
+
+
+.toLeft-enter-active {
+  animation: identifier .4s;
+}
+
+.toLeft-leave-active {
+  animation: against .4s;
+}

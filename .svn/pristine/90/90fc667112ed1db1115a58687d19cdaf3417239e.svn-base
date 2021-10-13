@@ -1,0 +1,357 @@
+<!-- 
+ -->
+<template>
+  <div class="between">
+    <div class="left">
+      <!-- <dv-border-box-7 :color="['#4cb7ef']"> -->
+      <LeftTop></LeftTop>
+      <LeftBottom></LeftBottom>
+      <!-- </dv-border-box-7> -->
+    </div>
+    <div class="center">
+      <div class="center-map">
+        <div class="map">
+          <Map></Map>
+          <div class="map-title">
+            <img class="img-icon" src="@/assets/imgs/home/map_title.png" />
+          </div>
+        </div>
+      </div>
+      <div class="center-tab">
+        <div class="tabs">
+          <p class="tab">四高能力</p>
+          <p class="tab">四首创新</p>
+          <p class="tab">综合示范</p>
+        </div>
+        <div class="status">
+          <div class="status-wrap">
+            <div class="status-item">
+              <img class="icon" src="../../assets/imgs/home/center-icon1.png" />
+              <p class="name">全社会用电量</p>
+              <p class="sub-name">
+                <span class="num" style="color:#00FFFF">4830</span>
+                <span class="text">亿千瓦时</span>
+              </p>
+            </div>
+            <div class="status-item">
+              <img class="icon" src="../../assets/imgs/home/center-icon2.png" />
+              <p class="name">网侧储能容量</p>
+              <p class="sub-name">
+                <span class="num" style="color:#72DFFF">4.9</span>
+                <span class="text">万千瓦</span>
+              </p>
+            </div>
+          </div>
+          <div class="status-wrap">
+            <div class="status-item">
+              <img class="icon" src="../../assets/imgs/home/center-icon3.png" />
+              <p class="name">削峰响应负荷</p>
+              <p class="sub-name">
+                <span class="num" style="color:#FFE600">577</span>
+                <span class="text">亿千瓦时</span>
+              </p>
+            </div>
+            <div class="status-item">
+              <img class="icon" src="../../assets/imgs/home/center-icon4.png" />
+              <p class="name">填谷响应负荷</p>
+              <p class="sub-name">
+                <span class="num" style="color:#FF8000">323</span>
+                <span class="text">万千瓦</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="right between">
+      <SanDaZhiBiao :provinceGetData="oldValue"></SanDaZhiBiao>
+    </div>
+  </div>
+</template>
+
+<script>
+var _ = require('lodash')
+import LeftTop from './components/LeftTop'
+import LeftBottom from './components/LeftBottom'
+import SanDaZhiBiao from './components/SanDaZhiBiao'
+import Map from './components/MapSvg'
+import Map2 from './components/maps/Map2'
+import Map3 from './components/maps/Map3'
+import Map4 from './components/maps/Map4'
+import FuNeng from './components/FuNeng'
+import * as apis from '@/service/gaotanxing'
+export default {
+  data() {
+    return {
+      myChart: null,
+      activeIndex: 0,
+      provinceGetData: {},
+      cityGetData: [],
+      lishuiDataList: [],
+      spaceTime: 10,
+      oldValue: {},
+      level: 1,
+      tabList: [
+        {
+          name: '高承载',
+          icon: require('@/assets/imgs/gaochengzaitab.png'),
+          activeIcon: require('@/assets/imgs/gaochengzai2.png')
+        },
+        {
+          name: '高互动',
+          icon: require('@/assets/imgs/gaohudong.png'),
+          activeIcon: require('@/assets/imgs/gaohudong2.png')
+        },
+        {
+          name: '高效能',
+          icon: require('@/assets/imgs/gaonengxiao.png'),
+          activeIcon: require('@/assets/imgs/gaoxiaoneng2.png')
+        },
+        {
+          name: '高自愈',
+          icon: require('@/assets/imgs/gaoziyunew.png'),
+          activeIcon: require('@/assets/imgs/gaoziyu2.png')
+        }
+      ]
+    }
+  },
+
+  components: {
+    LeftTop,
+    LeftBottom,
+    GaoXiaoNeng: () => import('./components/GaoXiaoNeng'),
+    SanDaZhiBiao,
+    FuNeng,
+    GaoChengZai: () => import('./components/GaoChengZai'),
+    GaoZiYu: () => import('./components/GaoZiYu'),
+    GaoHuDong: () => import('./components/GaoHuDong'),
+    Map,
+    Map2,
+    Map3,
+    Map4
+  },
+
+  computed: {},
+
+  created() {
+    this.refresh()
+  },
+
+  mounted() {
+    // setInterval(() => {
+    //   this.activeIndex++
+    //   if (this.activeIndex > 3) this.activeIndex = 0
+    // }, this.spaceTime * 1000)
+  },
+
+  methods: {
+    async refresh() {
+      this.provinceGetData = await apis.provinceGetData().then(res => res.data)
+      this.oldValue = _.cloneDeep(this.provinceGetData)
+      this.cityGetData = await apis.cityGetData().then(res => res.data)
+      this.lishuiDataList = await apis.lishuiDataList({ cityCode: 331100 }).then(res => res.data)
+    },
+    clcikMap() {
+      this.level = 2
+      apis.getSubStat({ cityCode: '331100' }).then(res => {
+        this.provinceGetData = res.data
+        // this.provinceGetData = Object.assign(res.data, this.oldValue)
+      })
+    },
+    changeIndex(i) {
+      this.level = 1
+      this.activeIndex = i
+      console.log(this.oldValue)
+      this.provinceGetData = this.oldValue
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.left,
+.right {
+  height: 951px;
+}
+.left {
+  width: 1086px;
+  background: url('../../assets/imgs/home/Group 18671.png') no-repeat;
+  background-size: 100% 100%;
+}
+.right {
+  width: 712px;
+  background: url('../../assets/imgs/home/Group 18700.png') no-repeat;
+  background-size: 100% 100%;
+  right-first {
+    overflow: hidden;
+  }
+}
+.center {
+  width: 2120px;
+  height: 950px;
+  position: relative;
+  .map {
+    width: 1494px;
+    height: 965px;
+    margin-left: 61px;
+    position: relative;
+    &-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 40px;
+      .img-icon {
+        display: flex;
+        width: 661px;
+        height: 100%;
+      }
+    }
+  }
+  .center-tab {
+    position: absolute;
+    right: 78px;
+    top: 34px;
+    bottom: 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .tabs {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      .tab {
+        width: 224px;
+        height: 74px;
+        line-height: 74px;
+        opacity: 1;
+        font-size: 40px;
+        font-weight: 700;
+        text-align: center;
+        color: #ffffff;
+        background: url('../../assets/imgs/home/center_tab.png') no-repeat center;
+        background-size: cover;
+        & + .tab {
+          margin-top: 30px;
+        }
+      }
+    }
+    .status {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: flex-start;
+      // margin-top: 43px;
+      &-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        & + .status-wrap {
+          margin-left: 106px;
+        }
+      }
+      &-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        & + .status-item {
+          margin-top: 30px;
+        }
+        .icon {
+          width: 80px;
+          height: 80px;
+          // display: block;
+        }
+        .name {
+          height: 20px;
+          opacity: 1;
+          font-size: 14px;
+          font-weight: 700;
+          text-align: center;
+          color: #ffffff;
+          line-height: 20px;
+          letter-spacing: 1px;
+          margin-top: 5px;
+        }
+        .sub-name {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          height: 16px;
+          line-height: 16px;
+          opacity: 1;
+          margin-top: 10px;
+          .num {
+            font-size: 16px;
+            font-weight: 700;
+            text-align: right;
+            color: #00ffff;
+            letter-spacing: 2px;
+          }
+          .text {
+            font-size: 10px;
+            font-weight: 400;
+            text-align: left;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-left: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  //   border: 1px solid red;
+  // box-sizing: border-box;
+  // .center-content {
+  //   height: 860px;
+  //   // border: 1px solid pink;
+  //   .toggle-view {
+  //     width: 2000px;
+  //     height: 860px;
+  //     box-sizing: border-box;
+  //     border: 3px solid #45deff;
+  //     box-shadow: 0 0 50px rgba(69, 222, 255, 0.5) inset;
+  //     float: right;
+  //     position: relative;
+  //     left: -10px;
+  //   }
+  //   .tabs {
+  //     width: 110px;
+  //     float: left;
+  //     height: 100%;
+  //     padding: 50px;
+  //     // background: pink;
+  //     .tab-item {
+  //       cursor: pointer;
+  //       width: 61px;
+  //       height: 187px;
+  //       background: url('../../assets/imgs/tabbackground.png');
+  //       .tab-icon {
+  //         width: 33px;
+  //         height: 33px;
+  //         top: 30px;
+  //         left: 14px;
+  //       }
+  //       .tab-name {
+  //         width: 30px;
+  //         top: 70px;
+  //         left: 16px;
+  //       }
+  //     }
+  //     .tab-actived {
+  //       background: url('../../assets/imgs/tabbackgroudnactived.png');
+  //     }
+  //   }
+  // }
+  // .five-power {
+  //   height: 90px;
+  //   // border: 1px solid teal;
+  // }
+}
+</style>

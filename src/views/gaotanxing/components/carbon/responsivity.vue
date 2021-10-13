@@ -1,0 +1,122 @@
+<!--  -->
+<template>
+  <div class="external_elec">
+    <div class="title_box">
+      <div class="sub_title">互动需求响应度</div>
+      <div class="rate">90%</div>
+    </div>
+    <div class="inner_content">
+      <div class="item">
+        <img src="../../../../assets/carbon/responsive1.png" alt="" class="img_box">
+        <div class="list">
+          <div class="name item">签约用户数</div>
+          <div class="num item">
+            <span>16.1</span>万户
+          </div>
+          <div class="bottom_string"></div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="../../../../assets/carbon/responsive2.png" alt="" class="img_box">
+        <div class="list">
+          <div class="name item">响应用户数</div>
+          <div class="num item">
+            <span>16</span>万户
+          </div>
+          <div class="bottom_string"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {}
+  },
+
+  components: {},
+
+  computed: {},
+
+  mounted() {},
+
+  methods: {}
+}
+</script>
+<style lang="less" scoped>
+.external_elec {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .title_box {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    color: #38e6fc;
+    font-size: 24px;
+    font-weight: bold;
+    padding-right: 20px;
+    .rate {
+      padding-left: 60px;
+      background: url('../../../../assets/carbon/title_bg.png') left center no-repeat;
+      background-size: 44px 24px;
+      height: 70px;
+      line-height: 70px;
+    }
+  }
+  .sub_title {
+    height: 70px;
+    line-height: 70px;
+    padding-left: 30px;
+    background: url('../../../../assets/carbon/sub_title_bg.png') left center no-repeat;
+    background-size: 5px 34px;
+  }
+  .inner_content {
+    height: 100%;
+    margin-top: -70px;
+    padding-top: 70px;
+    padding-right: 20px;
+  } 
+  .bottom_string{
+    width: calc(100% - 30px);
+    height: 3px;
+    position: absolute;
+    bottom: -10px;
+    background: url('../../../../assets/carbon/inter_str.png') left center no-repeat;
+    background-size: 100% 100%;
+  }
+  .item{
+    display: flex;
+    align-items: center;
+    padding-top: 16px;
+    .img_box{
+      width: 116px;
+      height: 116px;
+    }
+    .list{
+      flex: 1;
+      padding-left: 30px;
+      color: #00C0FF;
+      font-weight: bold;
+      font-size: 18px;
+      position: relative;
+      line-height: 30px;
+      .name{
+        width: 50%;
+        float: left;
+        color: #fff;
+      }
+      .num{
+        width: 50%;
+        float: left;
+        span{
+          font-size: 36px;
+          padding-right: 10px;
+        }
+      }
+    }
+  }
+}
+</style>

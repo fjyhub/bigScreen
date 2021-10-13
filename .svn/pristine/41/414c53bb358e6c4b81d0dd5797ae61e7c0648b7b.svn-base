@@ -1,0 +1,253 @@
+<!--  -->
+<template>
+  <div class="p22">
+    <div class="flex" style="margin-bottom: 40px">
+      <img class="pl18 pr10" src="../../../assets/imgs/1028.png" alt="" />
+      <div style="font-size: 34px" class="linear-green biaotijianbianse">三大指数</div>
+    </div>
+    <div
+      class="item relative"
+      v-for="(item, i) in list"
+      :key="i"
+      :style="{ background: 'url(' + item.url + ') no-repeat' }"
+    >
+      <div class="item-title linear-green flex aline">
+        <div style="width: 5px;height: 26px;background: #00C0FF" class="mr16"></div>
+        <span class="biaotijianbianse">{{ item.title }}</span>
+      </div>
+      <div
+        class="item-ratio absolute"
+        :style="{
+          background: item.ratioColor,
+          width: provinceGetData[item.last] * 285 + 'px'
+        }"
+      >
+        <div class="last-num absolute">{{ provinceGetData[item.last] }}</div>
+        <div class="line absolute"></div>
+        <div class="next-num absolute">{{ provinceGetData[item.next] }}</div>
+        <div class="circle absolute" :style="{ border: '2px solid ' + item.borderColor }"></div>
+        <div
+          class="center absolute direction-column align-center p10"
+          :style="{ background: item.centerColor }"
+        >
+          <img
+            :src="item.icon"
+            style="width: 60px;height: 60px"
+            class="gao-wailaidian-border"
+            alt=""
+          />
+          <!-- <div class="fz24 fw600">{{ item.name }}</div> -->
+        </div>
+      </div>
+      <div class="tag-box">
+        <div
+          v-for="(tag, tagIndex) in item.tags"
+          :key="tagIndex"
+          class="tag-item"
+          :style="{ background: 'url(' + item.tabBackground + ') no-repeat' }"
+          :class="[tag === '市场成熟度' ? 'tag-long' : 'tag-item']"
+        >
+          {{ tag }}
+        </div>
+      </div>
+    </div>
+    <div class="flex aline" style="margin-left: 250px;margin-top: -65px;">
+      <span class="color1 fz30">2020</span>
+      <span class="color2">年</span>
+      <span class="ml6 mr6" style="font-size: 48px;font-weight: 100;color: #41b4d5">/</span>
+      <span class="color2">2030年</span>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    provinceGetData: {
+      require: true,
+      type: Object
+    }
+  },
+  data() {
+    return {
+      list: [
+        {
+          url: require('@/assets/imgs/a5.png'),
+          centerColor: '#9e8308',
+          borderColor: '#ffff1a',
+          ratioColor: '#e2d302',
+          icon: require('@/assets/imgs/tan.png'),
+          name: '弹性指数',
+          last: 'currentElasticityIndex',
+          next: 'goalElasticityIndex',
+          tags: ['承载能力', '互动能力', '自愈能力', '用户感知'],
+          tabBackground: require('@/assets/imgs/huangkuang.png'),
+          title: '弹性指数'
+        },
+        {
+          url: require('@/assets/imgs/a6.png'),
+          centerColor: '#115894',
+          borderColor: '#4be9fc',
+          ratioColor: '#4186b1',
+          icon: require('@/assets/imgs/xiao.png'),
+          name: '效能指数',
+          last: 'currentEfficiencyIndex',
+          next: 'goalEfficiencyIndex',
+          tags: ['运行效能', '综合效益', '机制成效', '组织赋能'],
+          tabBackground: require('@/assets/imgs/a2.png'),
+          title: '效能指数'
+        },
+        {
+          url: require('@/assets/imgs/a7.png'),
+          centerColor: '#0f953b',
+          borderColor: '#1dffa1',
+          ratioColor: '#11ba74',
+          icon: require('@/assets/imgs/hulian.png'),
+          name: '互联指数',
+          last: 'currentInterconnectionIndex',
+          next: 'goalInterconnectionIndex',
+          tags: ['能源互联', '清洁低碳', '市场成熟度', '数智水平'],
+          tabBackground: require('@/assets/imgs/a4.png'),
+          title: '互联指数'
+        }
+      ]
+    }
+  },
+
+  components: {},
+
+  computed: {},
+
+  mounted() {},
+
+  methods: {}
+}
+</script>
+<style lang="less" scoped>
+.item {
+  height: 190px;
+  background-size: 386px 90px !important;
+  margin-top: 70px;
+  margin-bottom: 30px;
+  margin-left: 30px;
+  .item-title {
+    font-size: 32px;
+    position: absolute;
+    top: -47px;
+  }
+  .item-ratio {
+    height: 60px;
+    width: 0;
+    background: #e4d302;
+    border-radius: 0 76px 76px 0;
+    left: 80px;
+    top: 14px;
+    .circle {
+      width: 90px;
+      height: 90px;
+      border-radius: 90px;
+      background: #000;
+      left: -80px;
+      top: -14px;
+      border: 2px solid #e4d302;
+    }
+    .center {
+      width: 78px;
+      height: 78px;
+      border-radius: 78px;
+      background: #9e8308;
+      left: -74px;
+      top: -8px;
+    }
+    .last-num {
+      font-size: 45px;
+      font-weight: 600;
+      left: 40px;
+      top: 10px;
+    }
+    .line {
+      width: 40px;
+      height: 2px;
+      background: #fff;
+      transform: rotate(-60deg);
+      top: 30px;
+      left: 138px;
+    }
+    .next-num {
+      font-size: 34px;
+      font-weight: 600;
+      left: 180px;
+      top: 15px;
+      color: #a0a699;
+    }
+  }
+}
+
+.tag-box {
+  position: absolute;
+  width: 394px;
+  height: 36px;
+  top: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tag-item {
+  width: 96px;
+  height: 36px;
+  background-size: 96px 36px !important;
+  font-size: 20px;
+  line-height: 36px;
+  text-align: center;
+}
+
+.tag-long {
+  width: 110px;
+  height: 36px;
+  background-size: 110px 36px !important;
+  font-size: 20px;
+  line-height: 36px;
+  text-align: center;
+}
+
+@keyframes rotation {
+  // from {
+  //   transform: rotateX(0deg);
+  // }
+  // to {
+  //   transform: rotateX(360deg);
+  // }
+}
+
+.biaotijianbianse {
+  background: linear-gradient(to bottom, #9df4ff, #14c7ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gao-wailaidian-border {
+  transform: rotate(360deg);
+  animation: rotation 5s linear infinite;
+}
+
+.color1 {
+  background: linear-gradient(to top, #00ebff, #e4fff6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 30px;
+  font-family: Source Han Sans CN, Source Han Sans CN-Heavy;
+  font-weight: 800;
+}
+.color2 {
+  opacity: 0.67;
+  background: linear-gradient(to top, #00ebff, #e4fff6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: 20px;
+  font-family: Source Han Sans CN, Source Han Sans CN-Bold;
+  font-weight: 700;
+}
+</style>

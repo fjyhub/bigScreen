@@ -1,0 +1,267 @@
+<!-- 
+ -->
+<template>
+  <div class="carbon_emission_box">
+    <el-row class="vertical_box">
+      <el-col :span="7" class="colBox">
+        <div class="vertical_li">
+          <div class="content_boxs">
+            <div class="title_box">高承载</div>
+            <div class="component_box clearfix">
+              <div class="left_component">
+                <externalElec></externalElec>
+              </div>
+              <div class="right_component">
+                <newEnergy></newEnergy>
+              </div>
+              <div class="dec_str"></div>
+            </div>
+          </div>
+        </div>
+        <div class="vertical_li">
+          <div class="content_boxs">
+            <div class="title_box">高互动</div>
+            <div class="component_box clearfix">
+              <div class="left_component">
+                <interactive></interactive>
+              </div>
+              <div class="right_component">
+                <responsivity></responsivity>
+              </div>
+              <div class="dec_str"></div>
+            </div>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="10" class="col_12">
+        <div class="vertical_li vertical_li_mid"></div>
+      </el-col>
+      <el-col :span="7" class="colBox">
+        <div class="vertical_li">
+          <div class="content_boxs">
+            <div class="title_box">高效能</div>
+            <div class="component_box clearfix economy_box">
+              <el-carousel indicator-position="outside" :interval="5000">
+                <el-carousel-item>
+                  <div class="left_component">
+                    <economy></economy>
+                  </div>
+                  <div class="right_component">
+                    <discountRate :echartData="echartData1"></discountRate>
+                  </div>
+                </el-carousel-item>
+                <el-carousel-item>
+                  <div class="left_component">
+                    <discountRate :echartData="echartData1"></discountRate>
+                  </div>
+                  <div class="right_component">
+                    <gdpComsume :echartData="echartData2"></gdpComsume>
+                  </div>
+                </el-carousel-item>
+                 <el-carousel-item>
+                  <div class="left_component">
+                    <gdpComsume :echartData="echartData2"></gdpComsume>
+                  </div>
+                  <div class="right_component">
+                    <economy></economy>
+                  </div>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </div>
+        </div>
+        <div class="vertical_li">
+          <div class="content_boxs">
+            <div class="title_box">高自愈</div>
+            <div class="component_box clearfix">
+              <el-carousel indicator-position="outside" :interval="5000">
+                <el-carousel-item>
+                  <div class="left_component">
+                    <recoveryDisaster></recoveryDisaster>
+                  </div>
+                  <div class="right_component">
+                    <networkHealing :healingData="healingData1"></networkHealing>
+                  </div>
+                </el-carousel-item>
+                <!-- <el-carousel-item>
+                  <div class="left_component">
+                    <networkHealing :healingData="healingData1"></networkHealing>
+                  </div>
+                  <div class="right_component">
+                    <networkHealing :healingData="healingData2"></networkHealing>
+                  </div>
+                </el-carousel-item>
+                <el-carousel-item>
+                  <div class="left_component">
+                    <networkHealing :healingData="healingData2"></networkHealing>
+                  </div>
+                  <div class="right_component">
+                    <recoveryDisaster></recoveryDisaster>
+                  </div>
+                </el-carousel-item>-->
+              </el-carousel>
+            </div>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import externalElec from '@/views/gaotanxing/components/carbon/externalElec'
+import newEnergy from '@/views/gaotanxing/components/carbon/newEnergy'
+import interactive from '@/views/gaotanxing/components/carbon/interactive'
+import responsivity from '@/views/gaotanxing/components/carbon/responsivity'
+import economy from '@/views/gaotanxing/components/carbon/economy'
+import discountRate from '@/views/gaotanxing/components/carbon/discountRate'
+import networkHealing from '@/views/gaotanxing/components/carbon/networkHealing'
+import recoveryDisaster from '@/views/gaotanxing/components/carbon/recoveryDisaster'
+import gdpComsume from '@/views/gaotanxing/components/carbon/gdpComsume'
+export default {
+  data() {
+    return {
+      healingData1: {
+        rate: 89,
+        title: '三遥有效覆盖线路自愈功能投入占比'
+      },
+      healingData2: {
+        rate: 9.7,
+        title: '可承受大电源功率损失占全社会最大负荷的比重'
+      },
+      echartData1: {
+        title: '综合线损率',
+        yData: [3.7, 3.7, 3.7],
+        xData: ['浙江', '韩国', '德国']
+      },
+      echartData2: {
+        title: '万能GDP能耗',
+        yData: [0.39, 0.41, 0.17],
+        xData: ['浙江', '韩国', '德国']
+      }
+    }
+  },
+
+  components: {
+    externalElec,
+    newEnergy,
+    interactive,
+    responsivity,
+    economy,
+    discountRate,
+    gdpComsume,
+    recoveryDisaster,
+    networkHealing
+  },
+
+  computed: {},
+
+  created() {},
+
+  mounted() {},
+
+  methods: {}
+}
+</script>
+<style lang="less" scoped>
+.carbon_emission_box {
+  width: 100%;
+  height: 100%;
+  .vertical_box {
+    height: 100%;
+    padding: 20px;
+
+    .colBox {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    > .el-col {
+      height: 100%;
+
+      .vertical_li {
+        height: calc(50% - 20px);
+        position: relative;
+        background: rgba(7, 35, 66, 0.49);
+        border: 2px dashed rgba(44, 220, 220, 0.49);
+        padding: 20px 40px;
+
+        &.vertical_li_mid {
+          height: 100%;
+          background: none;
+          border: none;
+        }
+
+        .content_boxs {
+          height: 100%;
+          overflow: hidden;
+        }
+        .title_box {
+          height: 40px;
+          line-height: 40px;
+          padding-left: 60px;
+          background: url('../../assets/carbon/title_bg.png') left center no-repeat;
+          background-size: 44px 24px;
+          color: #38e6fc;
+          font-size: 30px;
+          font-weight: bold;
+        }
+        .component_box {
+          width: 100%;
+          height: calc(100% - 40px);
+          position: relative;
+          // &.economy_box {
+          //   .left_component {
+          //     width: 40%;
+          //   }
+          //   .right_component {
+          //     width: 60%;
+          //   }
+          // }
+
+          .left_component {
+            width: 50%;
+            height: 100%;
+            float: left;
+          }
+          .right_component {
+            width: 50%;
+            height: 100%;
+            float: left;
+            padding-left: 40px;
+          }
+          .dec_str {
+            width: 4px;
+            height: 100%;
+            position: absolute;
+            left: 50%;
+            margin-left: -2px;
+            background: url('../../assets/carbon/dec_str.png') center bottom no-repeat;
+            background-size: 100% 80%;
+          }
+        }
+      }
+    }
+  }
+}
+/deep/.el-carousel__indicator {
+  margin-left: 10px;
+  .el-carousel__button {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #8a8a8a;
+    opacity: 1;
+  }
+  &.is-active {
+    .el-carousel__button {
+      background-color: #2cdcdc;
+      opacity: 1;
+    }
+  }
+}
+.el-carousel__indicators {
+  margin-top: -50px;
+}
+</style>

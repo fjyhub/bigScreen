@@ -1,0 +1,53 @@
+<template>
+  <div class="container">
+    <container :options="{ width: 3840, height: 1080 }">
+      <!-- <div class="header">
+        <Header></Header>
+      </div> -->
+      <div class="content">
+        <router-view></router-view>
+      </div>
+    </container>
+  </div>
+</template>
+
+<script>
+import Header from './Header'
+import Container from '@/components/container'
+export default {
+  name: 'Home',
+  data() {
+    return {}
+  },
+  components: {
+    Header,
+    Container
+  },
+  mounted() {
+    console.log(this.$route.path === '/gaotanxing/index')
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.container {
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: 600 !important;
+  font-size: 14px;
+
+  .header {
+    height: 114px;
+  }
+  .content {
+    height: calc(100% - 54px);
+    overflow: hidden;
+    padding: 60px 48px 0;
+  }
+}
+#screen-container {
+  background: url('../../assets/imgs/home/bg-1.png') no-repeat;
+  background-size: cover;
+}
+</style>

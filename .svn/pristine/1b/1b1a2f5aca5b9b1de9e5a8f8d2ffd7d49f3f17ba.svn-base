@@ -1,0 +1,236 @@
+<!-- 
+ -->
+<template>
+  <div class="between">
+    <div class="left">
+      <dv-border-box-7 :color="['#4cb7ef']">
+        <LeftTop class="mb10"></LeftTop>
+        <LeftBottom></LeftBottom>
+      </dv-border-box-7>
+    </div>
+    <div class="center">
+      <div class="center-content">
+        <div class="tabs">
+          <div
+            class="tab-item relative"
+            :class="{ 'tab-actived': activeIndex === i }"
+            v-for="(item, i) in tabList"
+            :key="i"
+            @click="changeIndex(i)"
+          >
+            <img
+              :src="activeIndex === i ? item.activeIcon : item.icon"
+              class="tab-icon absolute"
+              alt=""
+            />
+            <div class="tab-name absolute fz28 fw600">{{ item.name }}</div>
+          </div>
+        </div>
+        <div class="toggle-view">
+          <div style="width:1350px;height:100%;float:left;">
+            <Map1
+              v-if="activeIndex === 0 && provinceGetData.extElePowerRate"
+              :provinceGetData="provinceGetData"
+            ></Map1>
+            <Map2
+              v-if="activeIndex === 1"
+              :cityGetData="cityGetData"
+              :lishuiDataList="lishuiDataList"
+              @click-map="clcikMap"
+            ></Map2>
+            <Map3 v-if="activeIndex === 2" :cityGetData="cityGetData"></Map3>
+            <Map4 v-if="activeIndex === 3" :provinceGetData="provinceGetData"></Map4>
+          </div>
+          <div style="width:640px;height:100%;float:right;">
+            <GaoChengZai
+              v-if="activeIndex === 0 && provinceGetData.extElePowerRate"
+              :provinceGetData="provinceGetData"
+            ></GaoChengZai>
+            <GaoHuDong
+              v-if="activeIndex === 1"
+              :level="level"
+              :provinceGetData="provinceGetData"
+            ></GaoHuDong>
+            <GaoXiaoNeng v-if="activeIndex === 2" :provinceGetData="provinceGetData"></GaoXiaoNeng>
+            <GaoZiYu v-if="activeIndex === 3" :provinceGetData="provinceGetData"></GaoZiYu>
+          </div>
+        </div>
+      </div>
+      <div class="five-power">
+        <FuNeng class="relative" style="bottom: -15px"></FuNeng>
+      </div>
+    </div>
+    <div class="right between">
+      <div class="right-second">
+        <dv-border-box-7 :color="['#4cb7ef']" style="height: 854px; width: 496px;">
+          <SanDaZhiBiao :provinceGetData="oldValue"></SanDaZhiBiao>
+        </dv-border-box-7>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+var _ = require('lodash')
+import LeftTop from './components/LeftTop'
+import LeftBottom from './components/LeftBottom'
+import SanDaZhiBiao from './components/SanDaZhiBiao'
+import Map1 from './components/maps/Map1'
+import Map2 from './components/maps/Map2'
+import Map3 from './components/maps/Map3'
+import Map4 from './components/maps/Map4'
+import FuNeng from './components/FuNeng'
+import * as apis from '@/service/gaotanxing'
+export default {
+  data() {
+    return {
+      myChart: null,
+      activeIndex: 0,
+      provinceGetData: {},
+      cityGetData: [],
+      lishuiDataList: [],
+      spaceTime: 10,
+      oldValue: {},
+      level: 1,
+      tabList: [
+        {
+          name: '高承载',
+          icon: require('@/assets/imgs/gaochengzaitab.png'),
+          activeIcon: require('@/assets/imgs/gaochengzai2.png')
+        },
+        {
+          name: '高互动',
+          icon: require('@/assets/imgs/gaohudong.png'),
+          activeIcon: require('@/assets/imgs/gaohudong2.png')
+        },
+        {
+          name: '高效能',
+          icon: require('@/assets/imgs/gaonengxiao.png'),
+          activeIcon: require('@/assets/imgs/gaoxiaoneng2.png')
+        },
+        {
+          name: '高自愈',
+          icon: require('@/assets/imgs/gaoziyunew.png'),
+          activeIcon: require('@/assets/imgs/gaoziyu2.png')
+        }
+      ]
+    }
+  },
+
+  components: {
+    LeftTop,
+    LeftBottom,
+    GaoXiaoNeng: () => import('./components/GaoXiaoNeng'),
+    SanDaZhiBiao,
+    FuNeng,
+    GaoChengZai: () => import('./components/GaoChengZai'),
+    GaoZiYu: () => import('./components/GaoZiYu'),
+    GaoHuDong: () => import('./components/GaoHuDong'),
+    Map1,
+    Map2,
+    Map3,
+    Map4
+  },
+
+  computed: {},
+
+  created() {
+    this.refresh()
+  },
+
+  mounted() {
+    // setInterval(() => {
+    //   this.activeIndex++
+    //   if (this.activeIndex > 3) this.activeIndex = 0
+    // }, this.spaceTime * 1000)
+  },
+
+  methods: {
+    async refresh() {
+      this.provinceGetData = await apis.provinceGetData().then(res => res.data)
+      this.oldValue = _.cloneDeep(this.provinceGetData)
+      this.cityGetData = await apis.cityGetData().then(res => res.data)
+      this.lishuiDataList = await apis.lishuiDataList({ cityCode: 331100 }).then(res => res.data)
+    },
+    clcikMap() {
+      this.level = 2
+      apis.getSubStat({ cityCode: '331100' }).then(res => {
+        this.provinceGetData = res.data
+        // this.provinceGetData = Object.assign(res.data, this.oldValue)
+      })
+    },
+    changeIndex(i) {
+      this.level = 1
+      this.activeIndex = i
+      console.log(this.oldValue)
+      this.provinceGetData = this.oldValue
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.left,
+.right {
+  height: 921px;
+}
+.left {
+  width: 1086px;
+}
+.right {
+  width: 500px;
+  right-first {
+    overflow: hidden;
+  }
+}
+.center {
+  width: 2120px;
+  height: 950px;
+  //   border: 1px solid red;
+  box-sizing: border-box;
+  .center-content {
+    height: 860px;
+    // border: 1px solid pink;
+    .toggle-view {
+      width: 2000px;
+      height: 860px;
+      box-sizing: border-box;
+      border: 3px solid #45deff;
+      box-shadow: 0 0 50px rgba(69, 222, 255, 0.5) inset;
+      float: right;
+      position: relative;
+      left: -10px;
+    }
+    .tabs {
+      width: 110px;
+      float: left;
+      height: 100%;
+      padding: 50px;
+      // background: pink;
+      .tab-item {
+        cursor: pointer;
+        width: 61px;
+        height: 187px;
+        background: url('../../assets/imgs/tabbackground.png');
+        .tab-icon {
+          width: 33px;
+          height: 33px;
+          top: 30px;
+          left: 14px;
+        }
+        .tab-name {
+          width: 30px;
+          top: 70px;
+          left: 16px;
+        }
+      }
+      .tab-actived {
+        background: url('../../assets/imgs/tabbackgroudnactived.png');
+      }
+    }
+  }
+  .five-power {
+    height: 90px;
+    // border: 1px solid teal;
+  }
+}
+</style>

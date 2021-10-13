@@ -1,0 +1,152 @@
+<!--  -->
+<template>
+  <div class="external_elec">
+    <div class="title_box">
+      <div class="sub_title">互动资源占比</div>
+      <div class="rate">0.78</div>
+    </div>
+    <div class="inner_content">
+      <div class="item">
+        <img src="../../../../assets/carbon/inter1.png" alt="" class="img_box">
+        <div class="list">
+          <div class="name item">工商业用户</div>
+          <div class="num item">
+            6216
+            <span>户</span>
+          </div>
+          <div class="value item">
+            701
+            <span>万千瓦</span>
+          </div>
+          <div class="bottom_string"></div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="../../../../assets/carbon/inter2.png" alt="" class="img_box">
+        <div class="list">
+          <div class="name item">电动汽车</div>
+          <div class="num item">
+            2661
+            <span>户</span>
+          </div>
+          <div class="value item">
+            21
+            <span>万千瓦</span>
+          </div>
+          <div class="bottom_string"></div>
+        </div>
+      </div>
+      <div class="item">
+        <img src="../../../../assets/carbon/inter3.png" alt="" class="img_box">
+        <div class="list">
+          <div class="name item">通信基站</div>
+          <div class="num item">
+            22
+            <span>万户</span>
+          </div>
+          <div class="value item">
+            15
+            <span>万千瓦</span>
+          </div>
+          <div class="bottom_string"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {}
+  },
+
+  components: {},
+
+  computed: {},
+
+  mounted() {},
+
+  methods: {}
+}
+</script>
+<style lang="less" scoped>
+.external_elec {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .title_box {
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    color: #38e6fc;
+    font-size: 24px;
+    font-weight: bold;
+    padding-right: 50px;
+    .rate {
+      padding-left: 60px;
+      background: url('../../../../assets/carbon/title_bg.png') left center no-repeat;
+      background-size: 44px 24px;
+      height: 70px;
+      line-height: 70px;
+    }
+  }
+  .sub_title {
+    height: 70px;
+    line-height: 70px;
+    padding-left: 30px;
+    background: url('../../../../assets/carbon/sub_title_bg.png') left center no-repeat;
+    background-size: 5px 34px;
+  }
+  .inner_content {
+    height: 100%;
+    margin-top: -70px;
+    padding-top: 70px;
+    padding-right: 20px;
+  } 
+  .bottom_string{
+    width: calc(100% - 30px);
+    height: 3px;
+    position: absolute;
+    bottom: -10px;
+    background: url('../../../../assets/carbon/inter_str.png') left center no-repeat;
+    background-size: 100% 100%;
+  }
+  .item{
+    display: flex;
+    align-items: center;
+    padding-top: 16px;
+    .img_box{
+      width: 62px;
+    }
+    .list{
+      flex: 1;
+      padding-left: 30px;
+      color: #00C0FF;
+      font-weight: bold;
+      font-size: 24px;
+      position: relative;
+      .name{
+        width: 40%;
+        float: left;
+        color: #fff;
+      }
+      .num{
+        width: 30%;
+        float: left;
+        span{
+          font-size: 18px;
+        }
+      }
+      .value{
+        width: 30%;
+        float: left;
+        text-align: right;
+        span{
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,838 @@
+<!--  -->
+<template>
+  <div class="between">
+    <div class="left">
+      <div class="title mb10"><span>区域碳排放</span></div>
+      <div class="between">
+        <div class="tec-border-1 tec-border">
+          <div class="title3">浙江能源消费结构</div>
+          <LeftPieChart :dataSource="LeftPieChartData"></LeftPieChart>
+          <!-- <div class="fz22 fwn">消耗量(亿吨标媒)</div> -->
+        </div>
+        <div class="tec-border-2 tec-border">
+          <div class="title3 ml40">浙江碳排放结构</div>
+          <RightPieChart :dataSource="RightPieChartData"></RightPieChart>
+          <!-- <div class="fr fz22 fwn">碳排量(亿吨)</div> -->
+        </div>
+      </div>
+      <div class="between mt30">
+        <div class="tec-border-3 tec-border">
+          <div class="title3 ">碳排强度</div>
+          <BarChart :dataSource="BarChartData"></BarChart>
+          <!-- <div class="fz22 fwn fr">吨/万元</div> -->
+        </div>
+        <div class="tec-border-4 tec-border">
+          <div class="title3 ml40">碳排放趋势</div>
+          <LineChart :dataSource="LineChartData"></LineChart>
+        </div>
+      </div>
+      <div class="left-context">
+        碳电协同
+      </div>
+    </div>
+    <div class="center">
+      <div class="center-content">
+        <div class="ml30">
+          <el-form :inline="true" :model="queryForm">
+            <el-form-item>
+              <el-date-picker
+                placeholder="日期"
+                :type="type"
+                value-format="yyyy-MM"
+                v-model="queryForm.year"
+                @change="refresh"
+                class="map-date"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item>
+              <el-select
+                placeholder="选择省份"
+                v-model="queryForm.distCode"
+                clearable
+                @change="refresh"
+                class="map-select"
+              >
+                <el-option
+                  :label="item.name"
+                  :value="item.code"
+                  v-for="(item, index) in city"
+                  :key="index"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div style="width:100%;height:100%;float:left;position:relative">
+          <Map :mapData="mapData" ref="mapData"></Map>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="title"><span>碳减排贡献</span></div>
+      <div class="border-2 mt10 between" style="padding: 15px 30px;height:395px">
+        <div>
+          <div class="title3">源端清洁化</div>
+          <div class="between mt20">
+            <div class="energy-block between">
+              <div class="energy-img ml10" style="width: 40%">
+                <img src="../../assets/imgs/contri-icon-1.png" alt="" />
+                <div class="fz24 mt10">风光倍增</div>
+              </div>
+              <div style="width: 60%" class="ta-center">
+                <div class="energy-title energy-title-line">
+                  <!-- <span>+{{ ydqjh.fgbz }}万千瓦</span> -->
+                  <span>
+                    +
+                    <span id="span1">{{ ydqjh.fgbz }}</span>
+                    <span>万千瓦</span>
+                  </span>
+                </div>
+                <div class="fz24">"十四五"风光装机</div>
+              </div>
+            </div>
+            <div class="energy-block between ml10">
+              <div class="energy-img ml10" style="width: 40%">
+                <img src="../../assets/imgs/contri-icon-2.png" alt="" />
+                <div class="fz24 mt10">清洁外来电</div>
+              </div>
+              <div style="width: 60%" class="ta-center">
+                <div class="energy-title energy-title-line">
+                  <span>
+                    年减排
+                    <span class="fz30" id="span2">{{ ydqjh.qjwldnjp }}</span>
+                    <span>吨</span>
+                  </span>
+                </div>
+                <div class="fz18" style="line-height:30px;">
+                  白鹤滩
+                  <span class="energy-number-color-2">
+                    <span id="span3">{{ ydqjh.qjwldbht }}</span>
+                    <span>亿千瓦时</span>
+                  </span>
+                </div>
+                <div class="fz18" style="line-height:30px;">
+                  溪洛渡
+                  <span class="energy-number-color-2">
+                    <span id="span4">{{ ydqjh.qjwldxld }}</span>
+                    <span>亿千瓦时</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="between mt10">
+            <div class="energy-block between">
+              <div class="energy-img ml10" style="width: 40%">
+                <img src="../../assets/imgs/contri-icon-3.png" alt="" />
+                <div class="fz24 mt10">煤电下降</div>
+              </div>
+              <div style="width: 60%" class="ta-center" v-if="ydqjh.mdxj2020 < ydqjh.mdxj2025">
+                <div class="energy-title-2 energy-title-line">
+                  <span>2025年</span>
+                  <span class="fz30" id="span1">{{ ydqjh.mdxj2025 * 100 }}%</span>
+                </div>
+                <div class="fz24 energy-title">
+                  <span>2020年</span>
+                  <span class="fz30">{{ ydqjh.mdxj2020 * 100 }}%</span>
+                </div>
+              </div>
+              <div style="width: 60%" class="ta-center" v-if="ydqjh.mdxj2020 > ydqjh.mdxj2025">
+                <div class="energy-title-2 energy-title-line">
+                  <span>2020年</span>
+                  <span class="fz30" id="span5">{{ ydqjh.mdxj2020 * 100 }}%</span>
+                </div>
+                <div class="fz24 energy-title">
+                  <span>2025年</span>
+                  <span class="fz30">{{ ydqjh.mdxj2025 * 100 }}%</span>
+                </div>
+              </div>
+              <div>
+                <img
+                  v-if="ydqjh.mdxj2020 < ydqjh.mdxj2025"
+                  src="../../assets/imgs/energy-icon-up.png"
+                  alt=""
+                  style="width: 35px"
+                />
+                <img
+                  v-if="ydqjh.mdxj2020 > ydqjh.mdxj2025"
+                  src="../../assets/imgs/energy-icon-down.png"
+                  alt=""
+                  style="width: 35px"
+                />
+              </div>
+            </div>
+            <div class="energy-block between ml10">
+              <div class="energy-img ml10" style="width: 40%">
+                <img src="../../assets/imgs/contri-icon-4.png" alt="" />
+                <div class="fz24 mt10">核电提升</div>
+              </div>
+              <div
+                style="width: 60%"
+                class="ta-center"
+                v-if="ydqjh.qjwldhdts2020 < ydqjh.qjwldhdts2025"
+              >
+                <div class="energy-title energy-title-line">
+                  <span>2025年</span>
+                  <span class="fz30">{{ ydqjh.qjwldhdts2025 * 100 }}%</span>
+                </div>
+                <div class="fz24 energy-title-2">
+                  <span>2020年</span>
+                  <span class="fz30">{{ ydqjh.qjwldhdts2020 * 100 }}%</span>
+                </div>
+              </div>
+              <div
+                style="width: 60%"
+                class="ta-center"
+                v-if="ydqjh.qjwldhdts2020 > ydqjh.qjwldhdts2025"
+              >
+                <div class="energy-title energy-title-line">
+                  <span>2020年</span>
+                  <span class="fz30">{{ ydqjh.qjwldhdts2020 * 100 }}%</span>
+                </div>
+                <div class="fz24 energy-title-2">
+                  <span>2025年</span>
+                  <span class="fz30">{{ ydqjh.qjwldhdts2025 * 100 }}%</span>
+                </div>
+              </div>
+              <div>
+                <img
+                  v-if="ydqjh.qjwldhdts2020 < ydqjh.qjwldhdts2025"
+                  src="../../assets/imgs/energy-icon-up.png"
+                  alt=""
+                  style="width: 35px"
+                />
+                <img
+                  v-if="ydqjh.qjwldhdts2020 > ydqjh.qjwldhdts2025"
+                  src="../../assets/imgs/energy-icon-down.png"
+                  alt=""
+                  style="width: 35px"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width:500px;height: 325px;">
+          <div class="title3">终端电器化</div>
+          <div class="mt20">
+            <div class="energy-block" style="width:500px; height: 329px">
+              <div class=" between">
+                <div class="between">
+                  <img
+                    src="../../assets/imgs/contri-icon-5.png"
+                    alt=""
+                    style="vertical-align:middle"
+                  />
+                  <div class="ml10 fz22" style="margin-top:5px;line-height:30px;">
+                    电能占
+                    <br />
+                    终端能
+                    <br />
+                    源消费
+                  </div>
+                </div>
+                <div class="energy-block-bg pt10 ta-center" style="width: 65%">
+                  <div class="energy-title energy-title-line">
+                    <span>2025年</span>
+                    <span class="fz30 pl30">{{ zddqh.dnzzdnyxf2025 * 100 }}%</span>
+                  </div>
+                  <div class="energy-title-2">
+                    <span>2020年</span>
+                    <span class="fz30 pl30">{{ zddqh.dnzzdnyxf2020 * 100 }}%</span>
+                  </div>
+                </div>
+              </div>
+              <div class=" between mt20">
+                <div class="between">
+                  <img
+                    src="../../assets/imgs/contri-icon-6.png"
+                    alt=""
+                    style="vertical-align:middle"
+                  />
+                  <div class=" ml10 fz22" style="margin-top:15px;line-height:30px;">
+                    电能
+                    <br />
+                    替代
+                  </div>
+                </div>
+                <div class="energy-block-bg pt10 ta-center fz20 map-color-3" style="width: 65%">
+                  <div>
+                    “十四五”电能替代
+                    <span class="map-color-1 fz26">{{ zddqh.dntd }}</span>
+                  </div>
+                  <div>
+                    亿千瓦时，减排
+                    <span class="map-color-1 fz26">{{ zddqh.dntdjp }}</span>
+                    万吨
+                  </div>
+                </div>
+              </div>
+              <div class=" between mt20">
+                <div class="between">
+                  <img
+                    src="../../assets/imgs/contri-icon-7.png"
+                    alt=""
+                    style="vertical-align:middle"
+                  />
+                  <div class=" ml10 fz22" style="margin-top:15px;line-height:30px;">
+                    电动
+                    <br />
+                    汽车
+                  </div>
+                </div>
+                <div class="energy-block-bg pt10 ta-center fz20 map-color-3" style="width: 65%">
+                  <div>
+                    2025年接入电动汽车
+                    <span class="map-color-1 fz26">{{ zddqh.ddqcs }}</span>
+                    万
+                  </div>
+                  <div>
+                    辆以上，减排
+                    <span class="map-color-1 fz26">{{ zddqh.ddqcjp }}</span>
+                    万吨
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt30">
+        <div class="border-2" style="padding: 15px 10px;    height: 400px;">
+          <div class="title3" style="margin-left:20px;"><span>企业碳排放监测</span></div>
+          <div class="mt20">
+            <div class="table3">
+              <!-- <el-table :header-cell-style="headerStyle" :data="tableData">
+                <el-table-column
+                  label="企业名称"
+                  align="center"
+                  prop="companyName"
+                ></el-table-column>
+                <el-table-column label="地区" align="center" prop="distName"></el-table-column>
+                <el-table-column label="行业" align="center" prop="hyname"></el-table-column>
+                <el-table-column label="状态" align="center">
+                  <template slot-scope="scope">
+                    <el-progress
+                      :stroke-width="26"
+                      :percentage="scope.row.status"
+                      :show-text="false"
+                      :status="
+                        scope.row.status > 99
+                          ? 'exception'
+                          : scope.row.status >= 70
+                          ? 'warning'
+                          : 'success'
+                      "
+                    ></el-progress>
+                    {{ scope.row.status > 99 ? '超额' : scope.row.status >= 70 ? '预警' : '正常' }}
+                  </template>
+                </el-table-column>
+              </el-table>-->
+              <ScrollBoard :config="surveyTable" style="width:1250px;height:300px"></ScrollBoard>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import anime from 'animejs'
+import * as Echarts from 'echarts'
+// import Map from './components/Map2'
+import Map from './components/Map'
+import LeftPieChart from './components/LeftPieChart'
+import RightPieChart from './components/RightPieChart'
+import BarChart from './components/BarChart'
+import LineChart from './components/LineChart'
+
+import * as apis from '@/service/technology'
+import { city } from '../../data/city.js'
+import { env } from 'echarts'
+window.anime = anime
+export default {
+  components: { Map, LeftPieChart, RightPieChart, BarChart, LineChart },
+  data() {
+    return {
+      type: 'month',
+      queryForm: {
+        year: '2021-04',
+        distCode: '330000'
+      },
+      city: [
+        {
+          name: '浙江省',
+          code: '330000'
+        }
+      ],
+      tableData: [
+        { name: '浙江吉利', addr: '杭州', hang: '交通', status: 2, percentage: 70 },
+        { name: '浙江吉利控股', addr: '杭州', hang: '交通', status: 1, percentage: 40 },
+        { name: '浙江吉利控股', addr: '杭州', hang: '交通', status: 3, percentage: 100 }
+      ],
+      mapGetData: [
+        { name: '嘉兴', mbl: 3698, dql: 3400, progress: 30, projectname: '' },
+        { name: '杭州', mbl: 3698, dql: 3000, progress: 70, projectname: '' },
+        { name: '嘉兴', mbl: 3698, dql: 2200, progress: 96, projectname: '' }
+      ],
+      // 排放结构
+
+      charIcon: require('../../assets/imgs/chart-icon.png'),
+      // 强度排名
+
+      ydqjh: {
+        fgbz: 1700,
+        mdxj2020: 0.47,
+        mdxj2025: 0.41,
+        qjwldbht: 300,
+        qjwldhdts2020: 0.09,
+        qjwldhdts2025: 0.1,
+        qjwldnjp: 4986,
+        qjwldxld: 312
+      },
+      zddqh: {
+        ddqcjp: 350,
+        ddqcs: 120,
+        dntd: 450,
+        dntdjp: 3330,
+        dnzzdnyxf2020: 0.38,
+        dnzzdnyxf2025: 0.42
+      },
+      chartBorder: require('../../assets/imgs/chart-border.png'),
+      LeftPieChartData: [],
+      RightPieChartData: [],
+      BarChartData: [],
+      LineChartData: [],
+      mapData: [],
+      surveyTable: {}
+    }
+  },
+
+  created() {
+    this.refresh()
+  },
+
+  computed: {},
+
+  mounted() {
+    var that = this
+    setInterval(() => {
+      that.roundText()
+    }, 10000)
+    setTimeout(() => {
+      this.$router.push({
+        path: '/home',
+      })
+    }, 3000);
+  },
+
+  methods: {
+    // 碳排放趋势
+    getData() {
+      const { year, distCode } = this.queryForm
+      apis.getQjQytpfTjList({ year, distCode }).then(res => {
+        this.LeftPieChartData = res.data.zjnyxfjg
+        this.RightPieChartData = res.data.zjtpfjg
+        this.BarChartData = res.data.tqdpm
+        this.LineChartData = res.data.tpfqs
+      })
+    },
+    // 获取地图数据
+    getMapData() {
+      const { year, distCode } = this.queryForm
+      apis.getMapData({ year, distCode }).then(res => {
+        console.log('ditu', res)
+        this.mapData = res.data
+      })
+    },
+    // 能源碳排放
+    getEnergy() {
+      const { year, distCode } = this.queryForm
+
+      apis.getNydltpfList({ year, distCode }).then(res => {
+        this.wld = res.data.wld
+        this.md = res.data.mdList
+        this.hd = res.data.hdList
+        this.xny = res.data.xnyList
+      })
+    },
+
+    // 减排贡献
+    getContribution() {
+      const { year, distCode } = this.queryForm
+
+      apis.getQjTjpgxList({ year, distCode }).then(res => {
+        this.ydqjh = res.data.ydqjh
+        this.zddqh = res.data.zddqh
+      })
+    },
+
+    // 表格数据
+    getTabelList() {
+      const { year, distCode } = this.queryForm
+
+      apis.getQytpfjcList({ year, distCode }).then(res => {
+        let tempData = []
+        res.data.forEach(item => {
+          // 排放额度 - 排放量
+          // <=0 超额  <=20 预警   正常  100 70
+          let s = (item.carbonTpfl / item.carbonZhtped) * 100
+          // item.percent = s >=100?'超额':s>=80?"预警":"正常"
+          item.status =
+            (item.carbonTpfl / item.carbonZhtped) * 100 > 100
+              ? 100
+              : (item.carbonTpfl / item.carbonZhtped) * 100
+
+          tempData.push([item.companyName, item.distName, item.hyname, item.status])
+        })
+        let data = res.data.slice(0, 6)
+        this.tableData = data
+
+        console.log(data)
+
+        this.surveyTable = {
+          header: ['企业名称', '地区', '行业', '状态'],
+          data: tempData,
+          waitTime: 2000,
+          columnWidth: [480, 180, 180, 400],
+          rowNum: 4
+        }
+      })
+    },
+
+    headerStyle({ row, column, rowIndex, columnIndex }) {
+      return ' background: linear-gradient(to bottom, #429ba3, #1d7a9b);color:#fff;font-size: 18px'
+    },
+    refresh() {
+      // // 获取区域碳排放图表数据
+      this.getData()
+      // // 获取地图数据
+      this.getMapData()
+      // // 碳排放分析
+      // this.getAnalysis()
+      // // 能源电力碳排放
+      // this.getEnergy()
+      // // 表格数据
+      this.getTabelList()
+      // // 减排贡献
+      this.getContribution()
+
+      console.log(anime)
+    },
+    roundText() {
+      var span1 = document.querySelector('#span1')
+      anime({
+        targets: span1,
+        innerHTML: [1000, this.ydqjh.fgbz],
+        easing: 'linear',
+        round: 1 // Will round the animated value to 1 decimal
+      })
+
+      var span2 = document.querySelector('#span2')
+      anime({
+        targets: span2,
+        innerHTML: [100, this.ydqjh.qjwldnjp],
+        easing: 'linear',
+        round: 1 // Will round the animated value to 1 decimal
+      })
+      var span3 = document.querySelector('#span3')
+      anime({
+        targets: span3,
+        innerHTML: [100, this.ydqjh.qjwldbht],
+        easing: 'linear',
+        round: 1 // Will round the animated value to 1 decimal
+      })
+      var span4 = document.querySelector('#span4')
+      anime({
+        targets: span4,
+        innerHTML: [100, this.ydqjh.qjwldxld],
+        easing: 'linear',
+        round: 1 // Will round the animated value to 1 decimal
+      })
+      var span5 = document.querySelector('#span5')
+      anime({
+        targets: span5,
+        innerHTML: [100, this.ydqjh.qjwldxld],
+        easing: 'linear',
+        round: 1 // Will round the animated value to 1 decimal
+      })
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.left,
+.center,
+.right {
+  height: 921px;
+  // background: linear-gradient(to bottom, #429ba3, #1d7a9b);
+}
+.left {
+  width: 1297px;
+  position: relative;
+}
+.left-context {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  margin-left: -35px;
+  margin-top: -50px;
+  font-size: 30px;
+  letter-spacing: 10px;
+  line-height: 40px;
+  font-weight: normal;
+}
+.right {
+  width: 1297px;
+}
+.center {
+  width: 1130px;
+}
+.el-progress {
+  width: 70%;
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 10px;
+}
+.energy-block-tag {
+  position: absolute;
+  bottom: -21px;
+  left: 50%;
+  margin-left: -47px;
+  background-color: rgba(35, 115, 124, 0.7);
+  width: 95px;
+  height: 30px;
+  line-height: 35px;
+  text-align: center;
+  border-radius: 50% 50% 0 0;
+}
+.energy-block {
+  padding: 15px 10px;
+  background: rgba(19, 56, 78, 0.5);
+  height: 160px;
+  align-items: center;
+  width: 350px;
+  img {
+    width: 80px;
+    height: 80px;
+  }
+  .energy-img {
+    text-align: center;
+  }
+  .energy-title {
+    // background: url('../../assets/imgs/energy-icon-line.png') no-repeat bottom center;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 24px;
+    span {
+      background: linear-gradient(to bottom, #00ffff, #00d1ff);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+  .energy-title-2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 24px;
+  }
+  .energy-title-line {
+    background: url('../../assets/imgs/energy-icon-line.png') no-repeat bottom center;
+    padding-bottom: 5px;
+  }
+  .energy-text {
+    color: #00d2ff;
+  }
+  .energy-number-1 {
+    span {
+      background: linear-gradient(to bottom, #00ffff, #01c6fd);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+  .energy-icon-large {
+    background: url('../../assets/imgs/energy-icon-large.png') no-repeat bottom center;
+    padding: 0 10px 5px;
+    background-size: 100% 2px;
+  }
+  .energy-number-color-2 {
+    color: #fcff02;
+  }
+  .energy-number-color-3 {
+    color: #02c8f5;
+  }
+  .energy-number-2 {
+    position: relative;
+    padding: 0 7px;
+    margin: 5px 1px;
+    display: inline-block;
+  }
+  .energy-number-2::before,
+  .energy-number-2::after {
+    position: absolute;
+    content: '';
+    top: 4px;
+    background: url('../../assets/imgs/energy-icon.png') no-repeat center;
+    width: 4px;
+    height: 18px;
+  }
+  .energy-number-2::before {
+    left: 0;
+  }
+  .energy-number-2::after {
+    right: 0;
+  }
+  .energy-right-border {
+    border: 1px solid #0faed5;
+    border-radius: 3px;
+    text-align: center;
+    padding: 10px;
+    color: #8fd1ff;
+  }
+  .energy-right-top {
+    background: url('../../assets/imgs/energy-icon-large.png') no-repeat bottom center;
+    background-size: 100% 2px;
+    padding-bottom: 10px;
+  }
+}
+.energy-block-bg {
+  background: url('../../assets/imgs/energy-block-bg.png') no-repeat center;
+  background-size: 100% 100%;
+}
+.tec-border {
+  width: 625px;
+  height: 395px;
+  background-size: 100% 100%;
+  padding: 15px 30px;
+}
+.tec-border-1 {
+  background: url('../../assets/imgs/tec-border-1.png') no-repeat center;
+}
+.tec-border-2 {
+  background: url('../../assets/imgs/tec-border-2.png') no-repeat center;
+}
+.tec-border-3 {
+  background: url('../../assets/imgs/tec-border-3.png') no-repeat center;
+  height: 425px;
+}
+.tec-border-4 {
+  background: url('../../assets/imgs/tec-border-4.png') no-repeat center;
+  height: 425px;
+}
+
+.center-content {
+  height: 860px;
+}
+
+.toggle-view {
+  width: 2000px;
+  height: 860px;
+  box-sizing: border-box;
+  border: 3px solid #45deff;
+  box-shadow: 0 0 50px rgba(69, 222, 255, 0.5) inset;
+  float: right;
+  position: relative;
+  left: -10px;
+}
+.map-data-1 {
+  background: url('../../assets/imgs/map-data-icon1.png') no-repeat center center;
+  background-size: 100% 100%;
+  width: 390px;
+  height: 195px;
+  position: absolute;
+  top: 280px;
+  left: 200px;
+}
+.map-data-2 {
+  background: url('../../assets/imgs/map-data-icon2.png') no-repeat center center;
+  background-size: 100% 100%;
+  width: 262px;
+  height: 132px;
+  position: absolute;
+  bottom: 100px;
+  left: 300px;
+  .map-data-num {
+    top: 15px;
+    left: 25px;
+  }
+  .map-data-title {
+    position: absolute;
+    top: 35px;
+    left: 80px;
+  }
+
+  .map-data-subtitle {
+    position: absolute;
+    bottom: 15px;
+    left: 95px;
+  }
+}
+.map-data-num {
+  position: absolute;
+  top: 20px;
+  left: 25px;
+}
+.map-data-title {
+  position: absolute;
+  top: 50px;
+  left: 100px;
+}
+.map-data-subtitle {
+  position: absolute;
+  bottom: 20px;
+  left: 150px;
+}
+.map-data-color-1 span {
+  background: linear-gradient(to bottom, #fffced, #ffee6d);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.map-data-color-2 span {
+  background: linear-gradient(to bottom, #e4eff5, #5dbdf7);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.map-data-tag {
+  width: 262px;
+  height: 132px;
+  background: url('../../assets/imgs/map-data-icon-tag.png') no-repeat center center;
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  background-size: 100% 100%;
+}
+/deep/.el-progress-bar__outer {
+  background-color: rgba(1, 238, 254, 0.1);
+}
+/deep/.el-table__body-wrapper {
+}
+.table3 {
+  // width: 1270px;
+  // height: 310px;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  height: 345px;
+  color: '#134A82';
+  background: url('../../assets/imgs/table3_bg.png') no-repeat;
+  background-size: contain;
+  // border: 1px solid red;
+  font-family: SourceHanSansCNBold;
+}
+.map-date {
+  width: 150px;
+  font-size: 22px;
+  /deep/.el-input__prefix {
+    display: none;
+  }
+}
+.map-select {
+  width: 140px;
+  /deep/.el-input {
+    font-size: 22px;
+  }
+  /deep/.el-input__icon {
+    font-size: 22px;
+  }
+}
+</style>

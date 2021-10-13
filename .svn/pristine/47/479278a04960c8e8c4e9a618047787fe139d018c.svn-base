@@ -1,0 +1,331 @@
+<!--  -->
+<template>
+  <div class="right-box relative">
+    <div class="r-o-t">
+      <img class="r-o-t-img" src="../../../assets/imgs/home/Group18559.png" alt="" srcset="" />
+      <span class="r-o-t-txt">三大指数</span>
+    </div>
+    <div class="r-o-c">
+      <div v-for="(item, index) in list[currentTab]" :key="index" :class="'r-o-c-item index-' + index">
+        <div class="r-o-c-item-t">
+          <img src="../../../assets/imgs/home/Rectangle3333.png" alt="" srcset="" />
+          <span>{{ item.name }}</span>
+        </div>
+        <div class="r-o-c-item-c">
+          <img class="r-o-c-item-c-l" :src="item.logo" alt="" srcset="" />
+          <div class="r-o-c-item-c-r">
+            <div
+              class="r-o-c-item-c-r-load"
+              :style="'width:' + (item.num1 / item.num2) * 100 + '%'"
+            >
+              <span>{{ item.num1 }}</span>
+            </div>
+            <span v-if="item.num1 / item.num2 < 0.855" class="r-o-c-item-c-r-total">
+              {{ item.num2 }}
+            </span>
+          </div>
+        </div>
+        <div class="r-o-c-item-b">
+          <div v-for="(item1, index1) in item.tags" :key="index1" class="r-o-c-item-b-item">
+            <span>{{ item1 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="r-o-b">
+      <span :class="currentTab === 0 ? 'big' : ''">2020</span>
+      <span>年</span>
+      <span class="big shu">/</span>
+      <span :class="currentTab === 1 ? 'big' : ''">2030</span>
+      <span>年</span>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    provinceGetData: {
+      require: true,
+      type: Object,
+    },
+  },
+  data() {
+    return {
+      currentTab: 0,
+      list: [
+        [
+          {
+            type: 'elastic',
+            num1: 0.5,
+            num2: 0.8,
+            logo: require('../../../assets/imgs/home/Group 18702.png'),
+            name: '弹性指数',
+            tags: ['承载能力', '互动能力', '自愈能力', '用户感知'],
+          },
+          {
+            type: 'potency',
+            num1: 0.35,
+            num2: 0.77,
+            logo: require('../../../assets/imgs/home/Group 18708.png'),
+            name: '效能指数',
+            tags: ['运行效能', '综合效益', '机制成效', '组织赋能'],
+          },
+          {
+            type: 'interconnection',
+            num1: 0.37,
+            num2: 0.8,
+            logo: require('../../../assets/imgs/home/Group 18713.png'),
+            name: '互联指数',
+            tags: ['能源互联', '清洁低碳', '市场成熟度', '数智水平'],
+          },
+        ],
+        [
+          {
+            type: 'elastic',
+            num1: 0.6,
+            num2: 0.8,
+            logo: require('../../../assets/imgs/home/Group 18702.png'),
+            name: '弹性指数',
+            tags: ['承载能力', '互动能力', '自愈能力', '用户感知'],
+          },
+          {
+            type: 'potency',
+            num1: 0.46,
+            num2: 0.77,
+            logo: require('../../../assets/imgs/home/Group 18708.png'),
+            name: '效能指数',
+            tags: ['运行效能', '综合效益', '机制成效', '组织赋能'],
+          },
+          {
+            type: 'interconnection',
+            num1: 0.57,
+            num2: 0.8,
+            logo: require('../../../assets/imgs/home/Group 18713.png'),
+            name: '互联指数',
+            tags: ['能源互联', '清洁低碳', '市场成熟度', '数智水平'],
+          },
+        ],
+      ],
+      time: null,
+    }
+  },
+
+  components: {},
+
+  computed: {},
+
+  mounted() {
+    this.time = setInterval(() => {
+      this.currentTab = this.currentTab === 0 ? 1 : 0
+    }, 5000)
+  },
+
+  destroyed() {
+    this.time = null
+  },
+
+  methods: {},
+}
+</script>
+<style lang="less" scoped>
+.right-box {
+  padding: 30px 42px 0;
+  display: flex;
+  flex-direction: column;
+  .r-o-t {
+    display: flex;
+    align-items: center;
+    .r-o-t-img {
+      width: 44px;
+      height: 24px;
+      display: flex;
+      margin-top: 4px;
+    }
+    .r-o-t-txt {
+      margin-left: 10px;
+      font-size: 30px;
+      font-family: Helvetica Neue, Helvetica Neue-Bold;
+      font-weight: 700;
+      text-align: left;
+      color: #38e6fc;
+      line-height: 42px;
+      letter-spacing: 4px;
+    }
+  }
+  .r-o-c {
+    display: flex;
+    flex-direction: column;
+    .r-o-c-item {
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+    }
+    .r-o-c-item:first-child {
+      margin-top: 20px;
+    }
+    .r-o-c-item-t {
+      display: flex;
+      align-items: center;
+      img {
+        width: 6px;
+        height: 34px;
+        opacity: 1;
+      }
+      span {
+        margin-left: 20px;
+        opacity: 1;
+        font-size: 26px;
+        font-family: Helvetica Neue, Helvetica Neue-Bold;
+        font-weight: 700;
+        text-align: left;
+        color: #38e6fc;
+        line-height: 26px;
+        letter-spacing: 2px;
+      }
+    }
+    .r-o-c-item-c {
+      display: flex;
+      align-items: center;
+      margin-top: 24px;
+      .r-o-c-item-c-l {
+        width: 102px;
+        height: 102px;
+        z-index: 2;
+      }
+      .r-o-c-item-c-r {
+        width: 480px;
+        height: 78px;
+        margin-left: -32px;
+        display: flex;
+        align-items: center;
+        background-size: contain;
+        .r-o-c-item-c-r-load {
+          transition: all 1.5s linear;
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          height: 68px;
+          border-radius: 0 120px 120px 0;
+          box-shadow: 0px 4px 6px 0 rgba(0, 0, 0, 0.16);
+          span {
+            font-size: 48px;
+            font-family: Gotham, Gotham-Bold;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 4px;
+            text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.16);
+            display: block;
+            padding-right: 50px;
+          }
+        }
+        .r-o-c-item-c-r-total {
+          font-size: 48px;
+          font-family: Gotham, Gotham-Bold;
+          font-weight: 700;
+          letter-spacing: 4px;
+          text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.16);
+          color: #fdf818;
+          margin-left: -6px;
+          z-index: 2;
+        }
+      }
+    }
+    .r-o-c-item-b {
+      display: flex;
+      margin-top: 30px;
+      .r-o-c-item-b-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 28px;
+        padding: 0 16px;
+        height: 36px;
+        background-size: cover;
+        span {
+          font-size: 20px;
+          font-family: PingFang SC, PingFang SC-Bold;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: 2px;
+        }
+      }
+      .r-o-c-item-b-item:last-child {
+        margin-right: 0;
+      }
+    }
+    .r-o-c-item.index-0 {
+      .r-o-c-item-c-r {
+        background: url('../../../assets/imgs/home/Group18703.png') no-repeat;
+        background-size: contain;
+      }
+      .r-o-c-item-c-r-load {
+        background-color: #fdf818;
+      }
+      .r-o-c-item-b-item {
+        background: url('../../../assets/imgs/home/Group18704.png') no-repeat;
+        background-size: contain;
+      }
+    }
+    .r-o-c-item.index-1 {
+      .r-o-c-item-c-r {
+        background: url('../../../assets/imgs/home/Path 16015.png') no-repeat;
+        background-size: contain;
+      }
+      .r-o-c-item-c-r-load {
+        background-color: #38e6fc;
+      }
+      .r-o-c-item-b-item {
+        background: url('../../../assets/imgs/home/Group 18709.png') no-repeat;
+        background-size: contain;
+      }
+      .r-o-c-item-c-r-total {
+        color: #38e6fc;
+      }
+    }
+    .r-o-c-item.index-2 {
+      .r-o-c-item-c-r {
+        background: url('../../../assets/imgs/home/Group 18714.png') no-repeat;
+        background-size: contain;
+      }
+      .r-o-c-item-c-r-load {
+        background-color: #0afb9a;
+      }
+      .r-o-c-item-b-item {
+        background: url('../../../assets/imgs/home/Group 18715.png') no-repeat;
+        background-size: contain;
+      }
+      .r-o-c-item-b-item:nth-child(3) {
+        padding: 0;
+      }
+      .r-o-c-item-c-r-total {
+        color: #0afb9a;
+      }
+    }
+  }
+  .r-o-b {
+    display: flex;
+    align-items: baseline;
+    position: absolute;
+    right: 49px;
+    bottom: 45px;
+    span {
+      display: inline-block;
+      font-size: 22px;
+      font-family: Helvetica Neue, Helvetica Neue-Bold;
+      font-weight: 700;
+      text-align: left;
+      color: #38e6fc;
+      line-height: 22px;
+      letter-spacing: 2px;
+      transition: all 1.5s linear;
+    }
+    span.big {
+      font-size: 36px;
+    }
+    span.shu {
+      padding: 0 10px;
+    }
+  }
+}
+</style>

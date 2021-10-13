@@ -1,0 +1,232 @@
+<!--  -->
+<template>
+  <div class="external_elec">
+    <div class="sub_title">配网自愈占比（核心区）</div>
+    <div class="inner_content">
+      <div class="echarts_box">
+        <div class="echart_dom" id="echart_dom7"></div>
+      </div>
+
+      <div class="list">
+        <div class="num">
+          {{healingData.rate}}
+          <span>%</span>
+          <div class="bottom_str"></div>
+        </div>
+        <div class="list_text">{{healingData.title}}</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import * as Echarts from 'echarts'
+export default {
+  data() {
+    return {
+      echartdata: {}
+    }
+  },
+  props: {
+    healingData: {}
+  },
+  components: {},
+
+  computed: {},
+  watch: {
+    //观察option的变化
+    healingData: {
+      handler(newVal, oldVal) {
+        console.log('9999')
+        this.initEcharts()
+      },
+      deep: true //对象内部属性的监听，关键。
+    }
+  },
+
+  mounted() {
+    this.initEcharts()
+  },
+
+  methods: {
+    initEcharts() {
+      var myChart1 = Echarts.init(document.getElementById('echart_dom7'))
+      this.setOptions(myChart1, this.echartdata.rateData)
+      // 指定图表的配置项和数据
+    },
+    setOptions(myChart, echartdata) {
+      var option = {
+        series: [
+          {
+            type: 'gauge',
+            radius: '86%',
+            clockwise: false,
+            startAngle: '-80',
+            endAngle: '-439.9999',
+            splitNumber: 25,
+            detail: {
+              offsetCenter: [0, -20],
+              formatter: ' '
+            },
+            pointer: {
+              show: false
+            },
+            axisLine: {
+              show: true,
+              lineStyle: {
+                color: [
+                  [0, '#2CFAFC'],
+                  [this.healingData.rate / 100, '#000'],
+                  [1, '#0797f3']
+                ],
+                width: 20
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: true,
+              length: 902,
+              lineStyle: {
+                color: '#0E192D',
+                width: 5
+              }
+            },
+            axisLabel: {
+              show: false
+            }
+          },
+          {
+            type: 'pie',
+            name: '内层细圆环',
+            radius: ['80%', '81%'],
+            hoverAnimation: false,
+            clockWise: false,
+            itemStyle: {
+              normal: {
+                color: '#0797f3'
+              }
+            },
+            label: {
+              show: false
+            },
+            data: [100]
+          },
+          {
+            type: 'pie',
+            name: '外层细圆环',
+            radius: ['99%', '100%'],
+            hoverAnimation: false,
+            clockWise: false,
+            itemStyle: {
+              normal: {
+                color: '#0797f3'
+              }
+            },
+            label: {
+              show: false
+            },
+            data: [100]
+          }
+        ]
+      }
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option)
+    },
+    setdata() {
+      let dataArr = []
+      for (var i = 0; i < 100; i++) {
+        if (i % 2 === 0) {
+          dataArr.push({
+            name: (i + 1).toString(),
+            value: 10,
+            itemStyle: {
+              normal: {
+                color: 'rgb(0,255,255,.3)'
+              }
+            }
+          })
+        } else {
+          dataArr.push({
+            name: (i + 1).toString(),
+            value: 100,
+            itemStyle: {
+              normal: {
+                color: 'rgb(0,0,0,0)',
+                borderWidth: 0,
+                borderColor: 'rgba(0,255,255,1)'
+              }
+            }
+          })
+        }
+      }
+      return dataArr
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.external_elec {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .sub_title {
+    height: 70px;
+    line-height: 70px;
+    color: #38e6fc;
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 30px;
+    background: url('../../../../assets/carbon/sub_title_bg.png') left center no-repeat;
+    background-size: 5px 34px;
+  }
+  .inner_content {
+    height: 100%;
+    margin-top: -70px;
+    padding-top: 70px;
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    color: #fff;
+  }
+  .echarts_box {
+    width: 155px;
+    height: 155px;
+    margin-right: 30px;
+    position: relative;
+    // background: url('../../../../assets/carbon/healing_bg.png') left center no-repeat;
+    background-size: 100% 100%;
+
+    .echart_dom {
+      width: 155px;
+      height: 155px;
+      // background: pink;
+    }
+  }
+  .list {
+    text-align: center;
+  }
+  .num {
+    font-size: 36px;
+    font-weight: bold;
+    color: #33ffff;
+    height: 70px;
+    position: relative;
+  }
+  .list_text {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 30px;
+  }
+  .bottom_str {
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    bottom: 20px;
+    background: url('../../../../assets/carbon/healing_str.png') left center no-repeat;
+    background-size: 100% 100%;
+  }
+}
+</style>

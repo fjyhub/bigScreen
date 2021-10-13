@@ -1,0 +1,33 @@
+// 全局的方法
+.small(@name, @value) {
+  @{name}: @value / 100rem;
+}
+
+.imgSize(@value) {
+  width: @value / 100rem;
+  height: @value / 100rem;
+}
+
+@red: #ff7a3a;
+@white: rgb(128, 121, 121);
+
+@font-face {
+  font-family: SourceHanSansCNBold;
+  src: url('/static/fonts/SourceHanSansCN-Bold.otf');
+}
+@font-face {
+  font-family: SourceHanSansCNHeavy;
+  src: url('/static/fonts/SourceHanSansCN-Heavy.otf');
+}
+@font-face {
+  font-family: SourceHanSansCNMedium;
+  src: url('/static/fonts/SourceHanSansCN-Medium.ttf') format('truetype');
+}
+@font-face {
+  font-family: SourceHanSansCNNormal;
+  src: url('/static/fonts/SourceHanSansCN-Normal.otf');
+}
+@font-face {
+  font-family: SourceHanSansCNRegular;
+  src: url('/static/fonts/SourceHanSansCN-Regular.ttf') format('truetype');
+}

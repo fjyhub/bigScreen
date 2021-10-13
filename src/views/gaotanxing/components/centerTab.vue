@@ -1,0 +1,282 @@
+<!--  -->
+<template>
+  <div class="center-tab">
+    <div class="tabs">
+      <div
+        v-for="(item, index) in list"
+        :key="index"
+        :class="'tab' + (currentTab === index ? ' on' : '')"
+        @click="setCurrentTab(index)"
+      >
+        <span class="tab-txt">{{ item.name }}</span>
+      </div>
+    </div>
+    <div class="status">
+      <div class="status-wrap">
+        <div class="status-item">
+          <div class="icon-block">
+            <img class="icon" src="../../../assets/imgs/home/Path 17456@2x.png" />
+            <img class="icon-center index1" src="../../../assets/imgs/home/Path 17457@2x.png" />
+          </div>
+          <p class="name">全社会用电量</p>
+          <p class="sub-name">
+            <span class="num" style="color: #00ffff">4830</span>
+            <span class="text">亿千瓦时</span>
+          </p>
+        </div>
+        <div class="status-item">
+          <div class="icon-block">
+            <img class="icon" src="../../../assets/imgs/home/Path 17460@2x.png" />
+            <img class="icon-center index3" src="../../../assets/imgs/home/Path 17459@2x.png" />
+          </div>
+          <p class="name">削峰响应负荷</p>
+          <p class="sub-name">
+            <span class="num" style="color: #ffe600">577</span>
+            <span class="text">亿千瓦时</span>
+          </p>
+        </div>
+      </div>
+      <div class="status-wrap">
+        <div class="status-item">
+          <div class="icon-block">
+            <img class="icon" src="../../../assets/imgs/home/Path 17473@2x.png" />
+            <img class="icon-center index2" src="../../../assets/imgs/home/Mask Group 47@2x.png" />
+          </div>
+          <p class="name">网侧储能容量</p>
+          <p class="sub-name">
+            <span class="num" style="color: #72dfff">4.9</span>
+            <span class="text">万千瓦</span>
+          </p>
+        </div>
+
+        <div class="status-item">
+          <div class="icon-block">
+            <img class="icon" src="../../../assets/imgs/home/Path 17464@2x.png" />
+            <img class="icon-center index4" src="../../../assets/imgs/home/Group 18684 (1).png" />
+          </div>
+          <p class="name">填谷响应负荷</p>
+          <p class="sub-name">
+            <span class="num" style="color: #ff8000">323</span>
+            <span class="text">万千瓦</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      currentTab: -1,
+      list: [
+        {
+          name: '四高能力',
+          path: '/gaotanxing/carbonEmission',
+        },
+        {
+          name: '四首创新',
+          path: '',
+        },
+        {
+          name: '综合示范',
+          path: '',
+        },
+      ],
+    }
+  },
+
+  components: {},
+
+  computed: {},
+
+  mounted() {},
+
+  methods: {
+    setCurrentTab(index) {
+      this.currentTab = index
+      this.$router.push({
+        path: this.list[index].path,
+      })
+    },
+  },
+}
+</script>
+<style lang="less" scoped>
+.center-tab {
+  position: absolute;
+  right: 78px;
+  top: 34px;
+  bottom: 42px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .tabs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    .tab {
+      width: 224px;
+      height: 74px;
+      line-height: 74px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      // center_tab.png
+      background: url('../../../assets/imgs/home/Group 18699.png') no-repeat center;
+      background-size: cover;
+      cursor: pointer;
+      margin-top: 30px;
+      .tab-txt {
+        font-size: 40px;
+        font-weight: 400;
+        color: #ffffff;
+      }
+    }
+    .tab.on {
+      background: url('../../../assets/imgs/home/Group 18698.png') no-repeat center;
+      background-size: cover;
+      .tab-txt {
+        font-weight: 700;
+      }
+    }
+  }
+  .status {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-start;
+    // margin-top: 43px;
+    &-wrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      & + .status-wrap {
+        margin-left: 106px;
+      }
+    }
+    &-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      & + .status-item {
+        margin-top: 30px;
+      }
+      .icon-block {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        .icon {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          top: 0;
+          -webkit-transition-property: -webkit-transform;
+          -webkit-transition-duration: 1s;
+          -moz-transition-property: -moz-transform;
+          -moz-transition-duration: 1s;
+          -webkit-animation: rotate 3s linear infinite;
+          -moz-animation: rotate 3s linear infinite;
+          -o-animation: rotate 3s linear infinite;
+          animation: rotate 3s linear infinite;
+        }
+        @-webkit-keyframes rotate {
+          from {
+            -webkit-transform: rotate(0deg);
+          }
+          to {
+            -webkit-transform: rotate(360deg);
+          }
+        }
+        @-moz-keyframes rotate {
+          from {
+            -moz-transform: rotate(0deg);
+          }
+          to {
+            -moz-transform: rotate(359deg);
+          }
+        }
+        @-o-keyframes rotate {
+          from {
+            -o-transform: rotate(0deg);
+          }
+          to {
+            -o-transform: rotate(359deg);
+          }
+        }
+        @keyframes rotate {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(359deg);
+          }
+        }
+        .icon-center {
+          display: flex;
+        }
+        .index1 {
+          width: 26px;
+          height: 38px;
+        }
+        .index2 {
+          width: 52px;
+          height: 52px;
+        }
+        .index3 {
+          width: 46px;
+          height: 42px;
+        }
+        .index4 {
+          width: 52px;
+          height: 34px;
+        }
+      }
+      .icon {
+        // display: block;
+      }
+      .name {
+        opacity: 1;
+        font-size: 28px;
+        font-weight: 700;
+        text-align: center;
+        color: #ffffff;
+        line-height: 48px;
+        letter-spacing: 2px;
+        margin-top: 10px;
+      }
+      .sub-name {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        align-items: center;
+        opacity: 1;
+        margin-top: 16px;
+        .num {
+          font-size: 32px;
+          font-weight: 700;
+          text-align: right;
+          color: #00ffff;
+          letter-spacing: 2px;
+        }
+        .text {
+          font-size: 20px;
+          font-weight: 400;
+          text-align: left;
+          color: #ffffff;
+          letter-spacing: 2px;
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}
+</style>

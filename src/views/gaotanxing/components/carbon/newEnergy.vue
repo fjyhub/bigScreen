@@ -1,0 +1,239 @@
+<!--  -->
+<template>
+  <div class="external_elec">
+    <div class="sub_title">高比例新能源</div>
+    <div class="inner_content">
+      <div class="new_energy_top">
+        <div class="list">
+          <div class="name item">新能源装机</div>
+          <div class="num item">
+            19
+            <span>%</span>
+          </div>
+          <div class="num item">1944</div>
+          <div class="unit item">万千瓦</div>
+        </div>
+        <div class="list">
+          <div class="name item">新能源电量</div>
+          <div class="num item">
+            7.9
+            <span>%</span>
+          </div>
+          <div class="num item">279</div>
+          <div class="unit item">亿千瓦时</div>
+        </div>
+        <div class="str"></div>
+      </div>
+      <div class="new_energy_bottom">
+        <div class="echart_box">
+          <div id="echart_dom3" class="echart_dom"></div>
+          <img src="../../../../assets/carbon/energy1.png" alt class="img_box" />
+        </div>
+        <div class="energy_bottom1">
+          <div class="list">
+            <div class="name item">装机</div>
+            <div class="num item">
+              1.8
+              <span>%</span>
+            </div>
+            <div class="num item">186</div>
+            <div class="unit item">万千瓦</div>
+          </div>
+          <div class="list">
+            <div class="name item">电量</div>
+            <div class="num item">
+              1.0
+              <span>%</span>
+            </div>
+            <div class="num item">36</div>
+            <div class="unit item">亿千瓦时</div>
+          </div>
+          <div class="str"></div>
+        </div>
+      </div>
+      <div class="new_energy_bottom">
+        <div class="echart_box">
+          <div id="echart_dom4" class="echart_dom"></div>
+          <img src="../../../../assets/carbon/energy2.png" alt class="img_box" />
+        </div>
+        <div class="energy_bottom1">
+          <div class="list">
+            <div class="name item">装机</div>
+            <div class="num item">
+              15
+              <span>%</span>
+            </div>
+            <div class="num item">1517</div>
+            <div class="unit item">万千瓦</div>
+          </div>
+          <div class="list">
+            <div class="name item">电量</div>
+            <div class="num item">
+              3.7
+              <span>%</span>
+            </div>
+            <div class="num item">131</div>
+            <div class="unit item">亿千瓦时</div>
+          </div>
+          <div class="str"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import * as Echarts from 'echarts'
+export default {
+  data() {
+    return {
+      echartdata1: {
+        rateData: [
+          { value: 19, name: '经济负载占比' },
+          { value: 81, name: '其他' }
+        ]
+      },
+      echartdata2: {
+        rateData: [
+          { value: 19, name: '经济负载占比' },
+          { value: 81, name: '其他' }
+        ]
+      }
+    }
+  },
+
+  components: {},
+
+  computed: {},
+
+  mounted() {
+    this.initEcharts()
+  },
+
+  methods: {
+    initEcharts() {
+      var myChart1 = Echarts.init(document.getElementById('echart_dom3'))
+      var myChart2 = Echarts.init(document.getElementById('echart_dom4'))
+      this.setOptions(myChart1, this.echartdata1)
+      this.setOptions(myChart2, this.echartdata2)
+      // 指定图表的配置项和数据
+    },
+    setOptions(myChart, echartdata) {
+      var option = {
+        color: ['#38E6FC', 'rgba(56, 230, 252, .5)'],
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['80%', '100%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '40',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: echartdata.rateData
+          }
+        ]
+      }
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option)
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.external_elec {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .sub_title {
+    height: 70px;
+    line-height: 70px;
+    color: #38e6fc;
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 30px;
+    background: url('../../../../assets/carbon/sub_title_bg.png') left center no-repeat;
+    background-size: 5px 34px;
+  }
+  .inner_content {
+    height: 100%;
+    margin-top: -70px;
+    padding-top: 70px;
+  }
+
+  .list {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 18px;
+    padding-left: 30px;
+    height: 40px;
+    position: relative;
+
+    .item {
+      flex: 1;
+    }
+    .unit {
+      font-size: 14px;
+    }
+    .num {
+      color: #33ffff;
+      font-weight: bold;
+      font-size: 24px;
+      span {
+        font-size: 18px;
+      }
+    }
+  }
+  .str {
+    width: 100%;
+    height: 4px;
+    position: absolute;
+    top: 50%;
+    margin-top: -2px;
+    background: url('../../../../assets/carbon/bottom_str.png') 30px center no-repeat;
+    background-size: 100% 100%;
+  }
+  .new_energy_top {
+    position: relative;
+  }
+  .new_energy_bottom {
+    display: flex;
+    align-items: center;
+    padding-top: 16px;
+    .echart_box {
+      width: 60px;
+      height: 60px;
+      position: relative;
+    }
+    .echart_dom {
+      width: 60px;
+      height: 60px;
+    }
+    .img_box {
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .energy_bottom1 {
+      flex: 1;
+      position: relative;
+    }
+  }
+}
+</style>

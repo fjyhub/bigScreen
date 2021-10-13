@@ -1,0 +1,73 @@
+<template>
+  <div class="trigon-svg">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <linearGradient
+          id="linear-gradient"
+          x1="0.5"
+          x2="0.5"
+          y2="1"
+          gradientUnits="objectBoundingBox"
+        >
+          <stop offset="0" stop-color="#003380" />
+          <stop offset="1" stop-color="#102b46" />
+        </linearGradient>
+      </defs>
+      <g id="Group_18783" data-name="Group 18783" transform="translate(-11118 -11221.122)">
+        <g id="Group_18782" data-name="Group 18782" transform="translate(-0.292)">
+          <rect
+            id="Rectangle_3378"
+            data-name="Rectangle 3378"
+            width="250"
+            height="161"
+            transform="translate(11118.292 11221.122)"
+            fill="url(#linear-gradient)"
+          />
+        </g>
+        <path
+          id="Polygon_27"
+          data-name="Polygon 27"
+          d="M100.5,0,201,133H0Z"
+          transform="translate(11343.5 11369.122) rotate(180)"
+          fill="none"
+          stroke="rgba(114,255,239,0.2)"
+          stroke-width="5"
+        />
+        <path
+          id="Polygon_28"
+          class="animation-color"
+          data-name="Polygon 28"
+          d="M100.5,0,201,133H0Z"
+          transform="translate(11343.5 11369.122) rotate(180)"
+          fill="none"
+          stroke="none"
+          stroke-width="5"
+        />
+      </g>
+    </svg>
+  </div>
+</template>
+<script>
+export default {}
+</script>
+<style scoped>
+.trigon-svg {
+  width: 100%;
+  height: 100%;
+}
+.trigon-svg .animation-color {
+  stroke: #33ffff;
+  stroke-dasharray: 0, 600;
+  stroke-dashoffset: 0;
+  animation: lineMove 2.8s linear infinite;
+}
+
+@keyframes lineMove {
+  0% {
+    stroke-dasharray: 0, 600;
+  }
+  100% {
+    stroke-dasharray: 600, 600;
+  }
+}
+</style>

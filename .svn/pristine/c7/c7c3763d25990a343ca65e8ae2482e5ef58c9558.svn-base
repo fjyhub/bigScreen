@@ -1,0 +1,138 @@
+<!--  -->
+<template>
+  <div class="external_elec">
+    <div class="sub_title">经济负载设备占比</div>
+    <div class="inner_content clearfix">
+      <div class="echart_pie">
+        <div id="echart_dom5" class="echart_dom"></div>
+        <div class="echart_title">经济负载主变占比</div>
+      </div>
+      <div class="echart_pie">
+        <div id="echart_dom6" class="echart_dom"></div>
+        <div class="echart_title">经济负载线路占比</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import * as Echarts from 'echarts'
+export default {
+  data() {
+    return {
+      echartdata1: {
+        title: '45%',
+        rateData: [
+          { value: 45, name: '经济负载占比' },
+          { value: 55, name: '其他' }
+        ]
+      },
+      echartdata2: {
+        title: '28%',
+        rateData: [
+          { value: 28, name: '经济负载占比' },
+          { value: 72, name: '其他' }
+        ]
+      }
+    }
+  },
+
+  components: {},
+
+  computed: {},
+
+  mounted() {
+    this.initEcharts()
+  },
+
+  methods: {
+    initEcharts() {
+      var myChart1 = Echarts.init(document.getElementById('echart_dom5'))
+      var myChart2 = Echarts.init(document.getElementById('echart_dom6'))
+      this.setOptions(myChart1, this.echartdata1)
+      this.setOptions(myChart2, this.echartdata2)
+      // 指定图表的配置项和数据
+    },
+    setOptions(myChart, echartdata) {
+      var option = {
+        color: ['#38E6FC', 'rgba(56, 230, 252, .5)'],
+        title: {
+          text: echartdata.title,
+          left: 'center',
+          top: 'center',
+          textStyle: {
+            color: '#38E6FC',
+            fontWeight: 'bold',
+            fontSize: 40
+          }
+        },
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['80%', '100%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '40',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: echartdata.rateData
+          }
+        ]
+      }
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option)
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.external_elec {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .sub_title {
+    height: 70px;
+    line-height: 70px;
+    color: #38e6fc;
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 30px;
+    background: url('../../../../assets/carbon/sub_title_bg.png') left center no-repeat;
+    background-size: 5px 34px;
+  }
+  .inner_content {
+    height: 100%;
+    margin-top: -70px;
+    padding-top: 70px;
+  }
+  .echart_pie {
+    width:160px;
+    height: 100%;
+    margin-right: 60px;
+    float: left;
+    .echart_title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      margin-top: 30px;
+    }
+  }
+  .echart_dom {
+    width: 160px;
+    height: 160px;
+  }
+}
+</style>

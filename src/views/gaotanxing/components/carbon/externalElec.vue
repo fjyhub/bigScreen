@@ -1,0 +1,276 @@
+<!--  -->
+<template>
+  <div class="external_elec">
+    <div class="sub_title">高比例外来电</div>
+    <div class="inner_content">
+      <div class="inner_box">
+        <div class="item">
+          <div class="echarts_box">
+            <div class="echart_text">
+              <img src="../../../../assets/carbon/elec.png" alt />
+              电力
+            </div>
+            <div id="echart_dom1" class="echart_dom"></div>
+          </div>
+          <div class="item_content">
+            <div class="sty_box clearfix nub_box">
+              <div class="elec_bottom"></div>
+              <div class="left_sty left_num">36<span>%</span></div>
+              <div class="right_sty right_num">
+                3364
+                <span>万千瓦</span>
+              </div>
+            </div>
+            <div class="sty_box clearfix">
+              <div class="left_sty">溪洛渡</div>
+              <div class="right_sty">
+                680
+                <span>万千瓦</span>
+              </div>
+            </div>
+            <div class="sty_box clearfix">
+              <div class="left_sty">灵沼直流</div>
+              <div class="right_sty">
+                680
+                <span>万千瓦</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <div class="echarts_box">
+            <div class="echart_text">
+              <img src="../../../../assets/carbon/elecVal.png" alt class="elecVal"/>
+              电量
+            </div>
+            <div id="echart_dom2" class="echart_dom"></div>
+          </div>
+          <div class="item_content">
+            <div class="sty_box clearfix nub_box">
+              <div class="elec_bottom"></div>
+              <div class="left_sty left_num">37<span>%</span></div>
+              <div class="right_sty right_num">
+                1787
+                <span>亿千瓦时</span>
+              </div>
+            </div>
+            <div class="sty_box clearfix">
+              <div class="left_sty">溪洛渡</div>
+              <div class="right_sty">
+                260
+                <span>亿千瓦时</span>
+              </div>
+            </div>
+            <div class="sty_box clearfix">
+              <div class="left_sty">灵沼直流</div>
+              <div class="right_sty">
+                365
+                <span>亿千瓦时</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import * as Echarts from 'echarts'
+export default {
+  data() {
+    return {
+      echartdata1: {
+        rateData: [
+          { value: 36, name: '经济负载占比' },
+          { value: 64, name: '其他' }
+        ]
+      },
+      echartdata2: {
+        rateData: [
+          { value: 36, name: '经济负载占比' },
+          { value: 64, name: '其他' }
+        ]
+      }
+    }
+  },
+
+  components: {},
+
+  computed: {},
+
+  mounted() {
+    this.initEcharts()
+  },
+
+  methods: {
+    initEcharts() {
+      var myChart1 = Echarts.init(document.getElementById('echart_dom1'))
+      var myChart2 = Echarts.init(document.getElementById('echart_dom2'))
+      this.setOptions(myChart1, this.echartdata1)
+      this.setOptions(myChart2, this.echartdata2)
+      // 指定图表的配置项和数据
+    },
+    setOptions(myChart, echartdata) {
+      var option = {
+        color: ['#38E6FC', 'rgba(56, 230, 252, .5)'],
+        series: [
+          {
+            name: '访问来源',
+            type: 'pie',
+            radius: ['80%', '100%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: false,
+              position: 'center'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '40',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: echartdata.rateData
+          }
+        ]
+      }
+
+      // 使用刚指定的配置项和数据显示图表。
+      myChart.setOption(option)
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.external_elec {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .sub_title {
+    height: 70px;
+    line-height: 70px;
+    color: #38e6fc;
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 30px;
+    background: url('../../../../assets/carbon/sub_title_bg.png') left center no-repeat;
+    background-size: 5px 34px;
+  }
+  .inner_content {
+    height: 100%;
+    margin-top: -70px;
+    padding-top: 70px;
+  }
+  .inner_box {
+    width: 100%;
+    height: 100%;
+    .item {
+      display: flex;
+      align-self: center;
+      &:last-child {
+        padding-top: 20px;
+      }
+    }
+  }
+  .echarts_box {
+    width: 116px;
+    height: 116px;
+    // background: pink;
+    margin-right: 30px;
+    position: relative;
+
+    .echart_dom{
+      width: 116px;
+      height: 116px;
+    }
+
+    .echart_text {
+      font-size: 20px;
+      color: #38e6fc;
+      text-align: center;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    img {
+      width: 45px;
+      height: 41px;
+      display: block;
+      margin: 0 auto 6px;
+      &.elecVal{
+        width: 28px;
+        height: 48px;
+      }
+    }
+  }
+  .sty_box {
+    color: #fff;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 40px;
+    .left_sty {
+      float: left;
+      width: 120px;
+    }
+    .right_sty {
+      float: left;
+      width: 230px;
+      padding-left: 20px;
+      position: relative;
+      &:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        border-width: 6px;
+        border-color: transparent transparent transparent #38e6fc;
+        border-style: dotted dotted dotted solid;
+      }
+      span {
+        font-size: 18px;
+      }
+    }
+    &.nub_box {
+      position: relative;
+      height: 44px;
+      .elec_bottom {
+        width: 100%;
+        height: 4px;
+        position: absolute;
+        bottom: 0;
+        background: url('../../../../assets/carbon/ele1.png') left center no-repeat;
+        background-size: 100% 100%;
+      }
+      .left_num {
+        color: #33ffff;
+        font-size: 30px;
+        font-weight: bold;
+        span {
+          color: #33ffff;
+          font-weight: 400;
+          font-size: 24px;
+        }
+      }
+      .right_num {
+        color: #33ffff;
+        font-size: 30px;
+        font-weight: bold;
+        &::before{
+          display: none;
+        }
+        span {
+          color: #33ffff;
+          font-weight: 400;
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
+</style>
